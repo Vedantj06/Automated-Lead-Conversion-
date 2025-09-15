@@ -1,0 +1,36 @@
+# Production override for docker-compose.yml
+version: '3.8'
+
+services:
+  frontend:
+    # Production-specific configurations
+    restart: always
+    
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          memory: 256M
+    
+    # Logging configuration
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    
+    # Labels for monitoring/management
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.marketing-app.rule=Host(`your-domain.com`)"
+      - "traefik.http.routers.marketing-app.tls=true"
+      - "traefik.http.routers.marketing-app.tls.certresolver=letsencrypt"
+      - "com.centurylinklabs.watchtower.enable=true"
+    
+    # Production environment variables
+    environment:
+      - NODE_ENV=production
+      - LOG_LEVEL=info

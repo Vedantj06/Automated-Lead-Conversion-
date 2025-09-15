@@ -1,0 +1,31 @@
+services:
+  - type: web
+    name: marketing-hub-api
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      - key: RATE_LIMIT_WINDOW_MS
+        value: 900000
+      - key: RATE_LIMIT_MAX_ATTEMPTS
+        value: 5
+      - key: FROM_EMAIL
+        value: noreply@yourdomain.com
+      - key: FROM_NAME
+        value: Marketing Hub
+      # Add your email provider settings
+      - key: EMAIL_PROVIDER
+        value: resend
+      # Add via Render dashboard:
+      # RESEND_API_KEY
+      # FRONTEND_URL
